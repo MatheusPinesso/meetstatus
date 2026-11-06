@@ -54,7 +54,7 @@ function notify(title, body) {
 }
 
 async function connectDiscord() {
-  if (shuttingDown || discordConnected || CLIENT_ID === 'COLOQUE_SEU_APPLICATION_ID') return;
+  if (shuttingDown || discordConnected || !CLIENT_ID) return;
   try {
     DiscordRPC.register(CLIENT_ID);
     rpc = new DiscordRPC.Client({ transport: 'ipc' });
@@ -86,13 +86,20 @@ function scheduleReconnect() {
 
 function applyActivity() {
   if (!discordConnected || !rpc || !meetingStartedAt) return;
+
   rpc.setActivity({
-    details: 'Em reunião',
-    state: 'Google Meet',
+    type: 3, // Watching (Assistindo)
+    details: 'Assistindo ao Google Meet',
+    state: 'Em reunião',
     startTimestamp: meetingStartedAt,
+
+    largeImageKey: 'google_meet',
+    largeImageText: 'Google Meet',
+
     instance: false
   });
-  console.log('[Discord] Atividade definida: Em reunião');
+
+  console.log('[Discord] Atividade definida: Assistindo ao Google Meet');
   updateTrayMenu();
 }
 
