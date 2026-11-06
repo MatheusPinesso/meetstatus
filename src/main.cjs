@@ -84,23 +84,32 @@ function scheduleReconnect() {
   }, 5000);
 }
 
-function applyActivity() {
+async function applyActivity() {
   if (!discordConnected || !rpc || !meetingStartedAt) return;
 
-  rpc.setActivity({
-    type: 3, // Watching (Assistindo)
-    details: 'Assistindo ao Google Meet',
-    state: 'Em reunião',
-    startTimestamp: meetingStartedAt,
+  try {
+    await rpc.request('SET_ACTIVITY', {
+      pid: process.pid,
+      activity: {
+        type: 3, // WATCHING — Assistindo
+        details: 'Em reunião no Google Meet',
+        state: 'Em reunião',
+        timestamps: {
+          start: Math.floor(meetingStartedAt / 1000)
+        },
+        assets: {
+          large_image: 'google_meet',
+          large_text: 'Google Meet'
+        },
+        instance: false
+      }
+    });
 
-    largeImageKey: 'google_meet',
-    largeImageText: 'Google Meet',
-
-    instance: false
-  });
-
-  console.log('[Discord] Atividade definida: Assistindo ao Google Meet');
-  updateTrayMenu();
+    console.log('[Discord] Atividade Watching aplicada');
+    updateTrayMenu();
+  } catch (error) {
+    console.error('[Discord] Erro ao definir atividade:', error);
+  }
 }
 
 async function setMeetingStatus(source = 'webhook') {
