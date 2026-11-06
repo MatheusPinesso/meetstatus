@@ -1,0 +1,76 @@
+{
+  "name": "meet-discord-status-desktop",
+  "version": "1.0.1",
+  "description": "Agente desktop para atualizar a atividade do Discord quando o usuario entra no Google Meet",
+  "main": "src/main.cjs",
+  "author": "Company IT",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis --x64",
+    "dist:mac": "electron-builder --mac dmg zip",
+    "dist:all": "electron-builder --win nsis --mac dmg zip"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "express": "^4.21.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "electron": "^35.2.1",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.company.meetdiscordstatus",
+    "productName": "Meet Discord Status",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "node_modules/**/*",
+      "src/tray.png"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "identity": null
+    },
+    "dmg": {
+      "sign": false
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Meet-Discord-Status-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
