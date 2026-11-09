@@ -9,6 +9,7 @@
     "start": "electron .",
     "dist:win": "electron-builder --win nsis --x64",
     "dist:mac": "electron-builder --mac dmg zip",
+    "dist:linux": "electron-builder --linux AppImage --x64",
     "dist:all": "electron-builder --win nsis --mac dmg zip"
   },
   "dependencies": {
@@ -64,6 +65,19 @@
         }
       ],
       "artifactName": "Meet-Discord-Status-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Utility",
+      "icon": "build/icon.png",
+      "artifactName": "Meet-Discord-Status-${version}.${ext}"
     },
     "nsis": {
       "oneClick": true,
